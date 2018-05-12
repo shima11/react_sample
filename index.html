@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>I'm in a React app!</title>
+</head>
+<body>
+<div id="react-app"></div>
+
+<script src="https://cdn.jsdelivr.net/react/0.14.0-rc1/react.js"></script>
+<script src="https://cdn.jsdelivr.net/react/0.14.0-rc1/react-dom.js"></script>
+</body>
+</html>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
+<script type="text/babel">
+</script>
+
+<script>
+
+function fetchData() {
+	const url = 'https://itunes.apple.com/jp/rss/topfreeapplications/limit=2/genre=6013/json';
+    fetch(url).then(function(response) {
+        return response.json();
+    }).then(function(json) {
+		console.log(json)
+		for (var index in json.feed.entry) {
+			const item = json.feed.entry[index]
+			console.log(item.category)
+		}
+		// document.body.innerText = json["feed"]["author"]["name"]
+        // var result = document.querySelector('#result');
+        // result.innerHTML = text;
+    });
+}
+
+var hoge = fetchData()
+console.log(hoge)
+
+var ProfileItem = React.createClass({
+	propTypes: {
+		name: React.PropTypes.string.isRequired,
+	},
+	render: function() {
+		return (
+				React.createElement('div', {className: 'Profile'},
+					React.createElement('h2', {className: 'Profile-name'}, "Name: " + this.props.name),
+					React.createElement('h3', {className: 'Profile-name'}, "NickName: " + this.props.nickname)
+					)
+			)
+		}
+});
+
+var ListItem = React.createClass({
+	propTypes: {
+		name: React.PropTypes.string.isRequired,
+	},
+	render: function() {
+		var list = [];
+		data = [1,2,3]
+		for(var i = 0; i<100; i++){
+			list.push(React.createElement('img', {src: "https://www.gstatic.com/webp/gallery3/2.png", width: 60, height: 60}))
+			list.push(React.createElement('h2', {className: 'list-item'}, "list " + i))
+		}
+		return(
+			React.createElement('ul', {className: 'list-ul'}, list)
+			);
+	}
+});
+
+var profileElement = React.createElement(ProfileItem, {name: "James K Nelson", nickname: "Jomes"})
+var listElement = React.createElement(ListItem, {})
+
+var rootElement =
+React.createElement('div', {}, 
+		React.createElement('h1', {}, "Profiles"),
+		profileElement,
+		listElement
+		)
+
+ReactDOM.render(rootElement, document.getElementById('react-app'))
+</script>
